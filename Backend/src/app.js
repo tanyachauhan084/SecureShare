@@ -17,6 +17,7 @@ app.use(cors({
     allowedHeaders: ["Authorization", "Content-Type"]
 }))
 
+//mounted router middlewae on a path//
 
 app.use("/healthcheck", healthcheckRoute);
 
