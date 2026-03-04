@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors"
+import healthcheckRoute from "./routes/healthcheck.route.js";
+import errorMiddleware from "./middlewares/error_middleware.js";
 
 const app= express();
 
@@ -15,6 +17,10 @@ app.use(cors({
     allowedHeaders: ["Authorization", "Content-Type"]
 }))
 
+
+app.use("/healthcheck", healthcheckRoute);
+
+app.use(errorMiddleware);
 
 export default app;
 
