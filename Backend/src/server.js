@@ -6,13 +6,13 @@ import DB_Connection from "./dbconnection/database_connection.js";
 dotenv.config(); //just do it once in the wholde wide project
 
 
-const PORT= process.env.PORT || 8080;
+const PORT= process.env.PORT || 8000;
 
 
 DB_Connection()
 .then(()=>{
     app.listen(PORT, ()=>{
-        console.log("Server is listening");
+        console.log("Server is listening now");
 })
 
 })
