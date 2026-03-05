@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
-import { ApiError } from "../utils/Api-error";
-import ApiResponse from "../utils/Api-response";
+import { ApiError } from "../utils/Api-error.js";
+import ApiResponse from "../utils/Api-response.js";
 import async_handler from "../utils/async_handler.js";
 
 const registerUser= async_handler(async(req, res)=>{
