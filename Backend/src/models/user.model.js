@@ -1,0 +1,52 @@
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+
+const userSchema= new mongoose.Schema(
+    
+    {
+    fullName:{
+        type:String,
+        required:[true, "It is a required field"],
+        minlength: [2, "It should atleast have 2 letters"],
+        maxlenght: [20, "it can atmost have 20 characters"],
+        trim:true,
+        
+    },
+
+    email:{
+        type:String,
+        required:[true, "It is a required field"],
+        unique:true,
+        index:true,
+        lowercase:[true, "email must be in lowercase"],
+        trim:true
+
+    },
+
+    password:{
+        type:String,
+        required: [true, "It is a required field"],
+        trim:true,
+        
+
+
+
+    },
+
+    
+},
+
+{timestamps:true}
+
+
+
+
+)
+
+ const User= mongoose.model("User", userSchema); // It is a compilled version of the dattabase itslef, which interacts with the database;
+
+ //User->users , the collection in the database, users.
+
+ 
+ export default User;
+
