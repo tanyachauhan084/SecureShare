@@ -47,6 +47,14 @@ const userSchema= new mongoose.Schema(
 
  //User->users , the collection in the database, users.
 
- 
+ //for password hashing
+ userSchema.pre("save", async function(){
+
+    if(!this.isModified("password")){
+        return;
+    }
+
+   this.password= await bcrypt.hash(this.password, 10);
+ })
  export default User;
 
