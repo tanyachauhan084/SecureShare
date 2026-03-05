@@ -21,6 +21,8 @@ app.use(cors({
 
 app.use("/healthcheck", healthcheckRoute);
 
+
+//added this for a proper response in the postman
 app.use(errorMiddleware);
 
 export default app;
