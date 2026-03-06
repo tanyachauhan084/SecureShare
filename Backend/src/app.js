@@ -3,8 +3,13 @@ import cors from "cors"
 import healthcheckRoute from "./routes/healthcheck.route.js";
 import errorMiddleware from "./middlewares/error_middleware.js";
 import authRoute  from "./routes/auth.route.js";
+import cookieParser from "cookie-parser"
 
 const app= express();
+
+
+//cookie-parser, app level middleware//
+app.use(cookieParser());
 
 app.use(express.json({limit:"16kb"}));
 app.use(express.static("public"));
