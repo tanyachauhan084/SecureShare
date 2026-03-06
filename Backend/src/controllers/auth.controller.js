@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import passwordVerification from "../services/passwordVerification.services.js";
+import { generateAccessTokens, generateRefreshToken } from "../services/tokens.services.js";
 import { ApiError } from "../utils/Api-error.js";
 import ApiResponse from "../utils/Api-response.js";
 import async_handler from "../utils/async_handler.js";
@@ -43,11 +44,32 @@ const registerUser= async_handler(async(req, res)=>{
 
     )}
 
-    const registerUser= await User.findById(createdUser._id).select(" -password");
+   
 
-    return res.status(201).json(
+   const AccessToken= await generateAccessTokens(createdUser);
+   const RefreshToken = await generateRefreshToken(createdUser);
+
+
+    createdUser.refreshToken= RefreshToken;
+
+    await createdUser.save({validateBeforeSave:false});
+
+    const options={
+         httpOnly: true,
+            secure:true,
+           
+    }
+
+    
+
+     const registeredUser= await User.findById(createdUser._id).select("-password");
+
+    return res.status(201)
+            .cookie("accessToken", AccessToken, options)
+            .cookie("refreshToken", RefreshToken, options)
+            .json(
         new ApiResponse(
-            registerUser,
+            { registeredUser, AccessToken, RefreshToken},
             201,
             "User registered successfully"
         )
