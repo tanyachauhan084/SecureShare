@@ -42,7 +42,7 @@ const registerUser= async_handler(async(req, res)=>{
 
     )}
 
-    const registerUser= await User.findById(createdUser._id).select(" -password -fullName");
+    const registerUser= await User.findById(createdUser._id).select(" -password");
 
     return res.status(201).json(
         new ApiResponse(
