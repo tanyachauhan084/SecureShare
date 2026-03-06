@@ -11,7 +11,6 @@ const registerUser= async_handler(async(req, res)=>{
 
    //if user already exist, throw the error
    if(user){
-
     throw new ApiError(
         "An error occured",
         409,
@@ -20,8 +19,10 @@ const registerUser= async_handler(async(req, res)=>{
 
    }
 
-   //if the user does not exist with this email id, then register
+   //if the user does not exist with this email id, then register//
 
+
+   //create user saves authomatically, redo might give issues//
    const createdUser= await User.create({
     fullName,
     email,
@@ -29,7 +30,7 @@ const registerUser= async_handler(async(req, res)=>{
    })
 
 
-   await createdUser.save({validateBeforeSave: false});
+  
    //if the user is not created after this, thorw an error.,
 
    if(!createdUser){
@@ -39,16 +40,14 @@ const registerUser= async_handler(async(req, res)=>{
         500,
         "something went wrong while registering user, please try again"
 
-    )
+    )}
 
+    const registerUser= await User.findById(createdUser._id).select(" -password -fullName");
 
-
-}
-
-    return res.status(200).json(
+    return res.status(201).json(
         new ApiResponse(
-            createdUser,
-            200,
+            registerUser,
+            201,
             "User registered successfully"
         )
     )
