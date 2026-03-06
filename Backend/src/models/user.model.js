@@ -8,7 +8,7 @@ const userSchema= new mongoose.Schema(
         type:String,
         required:[true, "It is a required field"],
         minlength: [2, "It should atleast have 2 letters"],
-        maxlenght: [20, "it can atmost have 20 characters"],
+        maxlength: [20, "it can atmost have 20 characters"],
         trim:true,
         
     },
@@ -18,7 +18,7 @@ const userSchema= new mongoose.Schema(
         required:[true, "It is a required field"],
         unique:true,
         index:true,
-        lowercase:[true, "email must be in lowercase"],
+        lowercase: true,
         trim:true
 
     },
@@ -43,7 +43,7 @@ const userSchema= new mongoose.Schema(
 
 )
 
- const User= mongoose.model("User", userSchema); // It is a compilled version of the dattabase itslef, which interacts with the database;
+ 
 
  //User->users , the collection in the database, users.
 
@@ -55,6 +55,10 @@ const userSchema= new mongoose.Schema(
     }
 
    this.password= await bcrypt.hash(this.password, 10);
+   
  })
+
+ const User= mongoose.model("User", userSchema); // It is a compilled version of the dattabase itslef, which interacts with the database;
+
  export default User;
 
