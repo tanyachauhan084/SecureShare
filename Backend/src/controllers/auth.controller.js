@@ -62,7 +62,7 @@ const registerUser= async_handler(async(req, res)=>{
 
     
 
-     const registeredUser= await User.findById(createdUser._id).select("-password");
+     const registeredUser= await User.findById(createdUser._id).select("-password -refreshToken");
 
     return res.status(201)
             .cookie("accessToken", AccessToken, options)
@@ -120,13 +120,28 @@ if(!isMatch){
     )
 }
 
+//if the password matches, that mean this user exists in the db, so we give them the access to logg in and generate the token, and set in cookies
+
+const AccessToken= await generateAccessTokens(user);
+const RefreshToken= await  generateRefreshToken(user);
+
+user.refreshToken= RefreshToken;
+await user.save({validateBeforeSave: false});
+
+const options={
+    httpOnly:true,
+    secure:true
+}
+
 //if password is a match, if ture, so now we know that the user exists in the db, it is an already register user in  database//
+const loggedInUser= await User.findById(user._id).select("-password -refreshToken");
 
-const loggedInUser= await User.findById(user._id).select("-password");
-
-return res.status(201).json(
+return res.status(201)
+        .cookie("accessToken", AccessToken, options)
+        .cookie("refreshToken", RefreshToken, options)
+  .json(
     new ApiResponse(
-        loggedInUser,
+        {loggedInUser, AccessToken, RefreshToken},
         201,
         "User successfully logged In"
     )
